@@ -3,6 +3,13 @@ uuid = "0ef86b2b-c763-4eee-8501-d9b219021374"
 authors = ["Tobias Knopp <tobias.knopp@tuhh.de> and contributors"]
 version = "0.1.0"
 
+[deps]
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+MLUtils = "f1d291b0-491e-4a28-83b9-f70985020b54"
+
+
 [compat]
 julia = "1"
 
