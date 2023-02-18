@@ -10,6 +10,7 @@ Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
 MLUtils = "f1d291b0-491e-4a28-83b9-f70985020b54"
 
 [compat]
+CUDA = "4"
 Distributions = "0.25"
 MLUtils = "0.4"
 Flux = "0.13"
