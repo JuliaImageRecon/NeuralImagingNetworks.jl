@@ -11,6 +11,8 @@ MLUtils = "f1d291b0-491e-4a28-83b9-f70985020b54"
 
 [compat]
 Distributions = "0.25"
+MLUtils = "0.4"
+Flux = "0.13"
 julia = "1"
 
 [extras]
