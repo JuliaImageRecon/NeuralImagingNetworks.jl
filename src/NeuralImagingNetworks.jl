@@ -33,5 +33,6 @@ end
 
 include("layers.jl")
 include("unets.jl")
+include("resDenseNet.jl")
 
 end
