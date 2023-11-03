@@ -1,4 +1,7 @@
-export Pseudo3dSliceWise
+export Pseudo3dSliceWise, Pseudo3dAveragedSliceWise
+
+using Statistics
+
 
 struct Pseudo3dSliceWise
     model2d
@@ -39,4 +42,22 @@ function (self::Pseudo3dSliceWise)(x)
     out = dropdims(out, dims=ndims(out)-1)
     out = permutedims(out, backward_permutation(self))
     return out
+end
+
+
+struct Pseudo3dAveragedSliceWise
+    slice_wise_ops::Vector{Pseudo3dSliceWise}
+
+    function Pseudo3dAveragedSliceWise(
+        model2d
+    )
+        new([
+            Pseudo3dSliceWise(model2d, dim=1)
+            for i = 1:3
+        ])
+    end
+end
+
+function (self::Pseudo3dAveragedSliceWise)(x)
+    return mean([op(x) for op in self.slice_wise_ops])
 end
