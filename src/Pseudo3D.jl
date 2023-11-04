@@ -52,7 +52,7 @@ struct Pseudo3dAveragedSliceWise
         model2d
     )
         new([
-            Pseudo3dSliceWise(model2d, dim=1)
+            Pseudo3dSliceWise(model2d, dim=i)
             for i = 1:3
         ])
     end
