@@ -34,5 +34,8 @@ end
 include("layers.jl")
 include("unets.jl")
 include("resDenseNet.jl")
+include("RDNDenoiser.jl")
+include("Pseudo3D.jl")
+include("Utils.jl")
 
 end
