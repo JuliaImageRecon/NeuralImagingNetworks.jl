@@ -127,13 +127,14 @@ mutable struct rdnDenoiserResRelu
     conv3
     conv4
     rdbs
+
     function rdnDenoiserResRelu(;
-        in_channels::Integer,
-        out_channels::Integer,
-        n_features::Integer,
-        n_blocks::Integer,
-        n_layers_in_block::Integer,
-        growth_rate::Integer,
+        in_channels::Integer=1,
+        out_channels::Integer=1,
+        n_features::Integer=12,
+        n_blocks::Integer=4,
+        n_layers_in_block::Integer=4,
+        growth_rate::Integer=12,
         bias::Bool=true,
         σ=Flux.relu,
         ndim::Integer=2,
@@ -216,16 +217,6 @@ mutable struct rdnDenoiserResRelu
     end
 end
 @Flux.functor rdnDenoiserResRelu
-
-rdnDenoiserResRelu() = rdnDenoiserResRelu(
-    in_channels=1,
-    out_channels=1,
-    n_features=12,
-    n_blocks=4,
-    n_layers_in_block=4,
-    growth_rate=12,
-    bias=true
-)
 
 function (model::rdnDenoiserResRelu)(x)
     x0 = x
