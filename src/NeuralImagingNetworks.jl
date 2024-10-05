@@ -37,5 +37,6 @@ include("resDenseNet.jl")
 include("RDNDenoiser.jl")
 include("Pseudo3D.jl")
 include("Utils.jl")
+include("dncnn.jl")
 
 end
