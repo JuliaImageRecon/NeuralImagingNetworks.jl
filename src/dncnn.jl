@@ -11,6 +11,7 @@ struct _DnCNNBlock
     padding::Integer
     bias::Bool
     batch_norm::Bool
+    ndim::Integer
     # private
     layers
 
@@ -20,17 +21,19 @@ struct _DnCNNBlock
         kernel_size::Integer,
         padding::Integer,
         bias::Bool,
-        batch_norm::Bool
+        batch_norm::Bool,
+        ndim::Integer,
+        batch_norm_eps::Real
     )
         layers = [
-            Conv((kernel_size, kernel_size), in_channels => out_channels, pad=padding, bias=bias),
+            Conv(Tuple(kernel_size for _ in 1:ndim), in_channels => out_channels, pad=padding, bias=bias),
             relu
         ]
         if batch_norm
-            insert!(layers, 2, BatchNorm(out_channels))
+            insert!(layers, 2, BatchNorm(out_channels, eps=batch_norm_eps))
         end
         layers = Chain(layers)
-        new(in_channels, out_channels, kernel_size, padding, bias, batch_norm, layers)
+        new(in_channels, out_channels, kernel_size, padding, bias, batch_norm, ndim, layers)
     end
 end
 @Flux.functor _DnCNNBlock
@@ -50,6 +53,7 @@ struct DnCNN
     padding::Integer
     bias::Bool
     batch_norm::Bool
+    ndim::Integer
     # private
     layers
 
@@ -61,14 +65,16 @@ struct DnCNN
         kernel_size::Integer=3,
         padding::Integer=1,
         bias::Bool=false,
-        batch_norm::Bool=true
+        batch_norm::Bool=true,
+        ndim::Integer=2,
+        batch_norm_eps::Real=1e-5
     )
         layers = []
-        push!(layers, _DnCNNBlock(in_channels=in_channels, out_channels=n_features, kernel_size=kernel_size, padding=padding, bias=bias, batch_norm=false))
+        push!(layers, _DnCNNBlock(in_channels=in_channels, out_channels=n_features, kernel_size=kernel_size, padding=padding, bias=bias, batch_norm=false, ndim=ndim, batch_norm_eps=batch_norm_eps))
         for _ in 1:n_layers-2
-            push!(layers, _DnCNNBlock(in_channels=n_features, out_channels=n_features, kernel_size=kernel_size, padding=padding, bias=bias, batch_norm=batch_norm))
+            push!(layers, _DnCNNBlock(in_channels=n_features, out_channels=n_features, kernel_size=kernel_size, padding=padding, bias=bias, batch_norm=batch_norm, ndim=ndim, batch_norm_eps=batch_norm_eps))
         end
-        push!(layers, Conv((kernel_size, kernel_size), n_features => out_channels, pad=padding, bias=bias))
+        push!(layers, Conv(Tuple(kernel_size for _ in 1:ndim), n_features => out_channels, pad=padding, bias=bias))
         layers = Chain(layers)
         new(
             in_channels,
@@ -79,6 +85,7 @@ struct DnCNN
             padding,
             bias,
             batch_norm,
+            ndim,
             layers
         )
     end
